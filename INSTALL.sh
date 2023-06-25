@@ -30,5 +30,55 @@ if [[ $device -eq "wheatley" ]]; then rmmod pcspkr; fi
 # Disk setup
 source "./devices/$device/disk.sh"
 
+# Install packages
+echo "--> Installing packages..."
+
+source "./devices/$device/pacstrap.sh"
+
+# Generate fstab
+echo "--> Generating fstab..."
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+# Create scripts directory
+SCRIPTS="/SCRIPTS"
+SCRIPTS_LOCAL="/mnt$SCRIPTS"
+mkdir -p $SCRIPTS_LOCAL
+
+# Copy env variables across
+cp "./ENV.sh" "$SCRIPTS_LOCAL"
+
+# Environmental variables
+source "./devices/$device/env.sh"
+
+# Locale
+cp "./devices/all/locale.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPTS/locale.sh"
+
+# Hostname
+echo "--> Setting hostname..."
+echo $device >> /mnt/etc/hostname
+
+# Program configs
+cp "./devices/all/programs.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPTS/programs.sh"
+
+# User
+cp "./devices/all/user.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPTS/user.sh"
+
+# Bootloader
+cp "./devices/$device/bootloader.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPS/bootloader.sh"
+
 # Setup DNS
-sh "./misc/DNS.sh"
+cp "./devices/all/DNS.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPTS/DNS.sh"
+
+# Setup AUR
+cp "./devices/$device/yay.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPTS/yay.sh"
+
+# systemctl
+cp "./devices/$device/systemctl.sh" $SCRIPTS_LOCAL
+arch-chroot /mnt "$SCRIPTS/systemctl.sh"

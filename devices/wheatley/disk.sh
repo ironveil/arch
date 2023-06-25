@@ -19,9 +19,19 @@ echo "--> Making LVM..."
 
 pvcreate /dev/mapper/cryptdisk
 vgcreate wheatley /dev/mapper/cryptdisk
-lvcreate -L 8G whealey -N swap
-lvcreate -l 100%FREE whealey -N root
+lvcreate -L 8G wheatley -N swap
+lvcreate -l 100%FREE wheatley -N root
 
 # Formatting
 echo "--> Formatting partitions..."
 
+mkfs.fat -F32 -nEFI /dev/nvme0n1p1
+mkswap -L SWAP /dev/mapper/wheatley-swap
+mkfs.btrfs -fL DISK /dev/mapper/wheatley-root
+
+# Mounting
+echo "--> Mounting partitions..."
+
+mount -o compress-force=zstd,ssd,space_cache=v2,discard,noatime /dev/mapper/wheatley-root /mnt
+mount --mkdir -o nodev,noexec,nosuid,noatime,commit=60 /dev/nvme0n1p1 /mnt/efi
+swapon /dev/mapper/wheatley-swap

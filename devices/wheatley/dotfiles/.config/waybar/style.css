@@ -1,0 +1,100 @@
+/*
+// waybar styling
+*/
+
+/* //// ALL */
+
+* {
+    /* Font */
+    font-family: Iosevka;
+    font-size: 16px;
+
+    /* Border */
+    border: none;
+    border-radius: 0;
+}
+
+
+/* //// BAR */
+
+window#waybar {
+    /* Theming */
+    background: #1e1e2e;
+    color: #cdd6f4;
+
+    /* Border */
+    border-top: 2px solid #cba6f7;
+
+    /* Sizing */
+    margin: 0;
+    padding: 0;
+}
+
+
+/* //// MODULES */
+
+/* Separator */
+#custom-separator {
+    padding: 4px 4px 0 4px;
+    color: #45475a;
+}
+
+/* Workspaces */
+#workspaces button {
+    min-width: 0;
+    padding-top: 10px;
+}
+
+#workspaces button.active {
+    background-color: #cba6f7;
+    color: #1e1e1e;
+}
+
+#workspaces button.persistent {
+    color: #45475a;
+}
+
+/* Main modules */
+#window,
+#clock,
+#network,
+#cpu,
+#memory,
+#disk,
+#pulseaudio,
+#battery {
+    padding: 4px 16px 0 16px;
+}
+
+/* Network */
+#network.disabled,
+#network.disconnected {
+    color: #f38ba8;
+}
+
+#network.linked {
+    color: #f9e2af;
+}
+
+/* Audio */
+#pulseaudio.bluetooth {
+    color: #89dceb;
+}
+
+#pulseaudio.muted {
+    color: #f38ba8;
+}
+
+/* Battery */
+#battery.warning {
+    color: #f9e2af;
+}
+
+#battery.critical {
+    color: #f38ba8;
+}
+
+#battery.charging,
+#battery.full {
+    color: #a6e3a1;
+}
